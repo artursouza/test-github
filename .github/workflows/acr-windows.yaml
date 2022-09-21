@@ -10,3 +10,10 @@ jobs:
     steps:
       - name: Is Docker installed?
         run: docker --version
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Login to ACR registry
+        run: |
+          az acr login --name asouzatest
