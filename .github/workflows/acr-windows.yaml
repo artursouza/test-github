@@ -14,6 +14,10 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Login to ACR registry
+      - name: Login to ACR registry on Windows
         run: |
-          az acr login --name asouzatest
+          $accessKey = (az acr login  -n asouzatest --expose-token --query accessToken)
+          docker login asouzatest.azurecr.io -u 00000000-0000-0000-0000-000000000000 -p $accessKey
+      - name: Login to ACR registry on Linux or Mac
+        run: |
+          docker login asouzatest.azurecr.io -u 00000000-0000-0000-0000-000000000000 -p `az acr login  -n asouzatest --expose-token | jq .accessToken`
