@@ -1,0 +1,12 @@
+name: test-acr-windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  acr-test:
+    name: Testing ACR and Docker on Windows
+    runs-on: windows-latest
+    steps:
+      - name: Is Docker installed?
+        run: docker --version
