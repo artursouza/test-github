@@ -28,7 +28,7 @@ jobs:
         branch: [feature/workflows, feature/something_else]
     steps:
       - name: Merge main -> ${{ matrix.branch }}
-        uses: devmasx/merge-branch@v1.4.0
+        uses: devmasx/merge-branch@854d3ac71ed1e9deb668e0074781b81fdd6e771f
         with:
           type: now
           from_branch: main
