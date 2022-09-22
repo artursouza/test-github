@@ -43,6 +43,9 @@ jobs:
         run: |
           REMOTE=$( git remote )
           git log | head -n 20
+          git fetch $REMOTE
+          git checkout ${{ env.GIT_REF }}
+          git log | head -n 20
           git fetch $REMOTE ${{ matrix.branch }}:${{ matrix.branch }}
           git checkout ${{ matrix.branch }}
           git log | head -n 20
