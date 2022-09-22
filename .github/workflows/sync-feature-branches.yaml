@@ -29,15 +29,20 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Identify branch
+      - name: Set GIT_REF
+        if: ${{ env.GITHUB_SHA }} != ''
         run: |
-
-      - name: Merging ${{ env.GITHUB_REF }} at ${{ env.GITHUB_SHA }} into ${{ matrix.branch }}
+          echo "GIT_REF=${{ env.GITHUB_SHA }}" >>${GITHUB_ENV}
+      - name: Set GIT_REF as main branch (or master)
+        if: ${{ env.GIT_REF }} == ''
+        run: |
+          echo "GIT_REF=$( git symbolic-ref --short HEAD )" >>${GITHUB_ENV}
+      - name: Merging ${{ env.GIT_REF }} into ${{ matrix.branch }}
         env:
           GITHUB_TOKEN: ${{ secrets.DAPR_BOT_TOKEN }}
         run: |
           REMOTE=$( git remote )
           git fetch $REMOTE ${{ matrix.branch }}:${{ matrix.branch }}
-          git checkout ${{ matrix.branch }} 
-          git merge ${{ env.GITHUB_SHA }}
+          git checkout ${{ matrix.branch }}
+          git merge ${{ env.GIT_REF }}
           git push $REMOTE ${{ matrix.branch }}
