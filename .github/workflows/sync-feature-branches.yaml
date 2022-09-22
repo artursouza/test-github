@@ -25,17 +25,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: [feature/workflows]
+        branch: [feature/workflows, feature/something_else]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Merging master branch into ${{ matrix.branch }}
+      - name: Identify branch
+        run: |
+
+      - name: Merging ${{ env.GITHUB_REF }} at ${{ env.GITHUB_SHA }} into ${{ matrix.branch }}
         env:
           GITHUB_TOKEN: ${{ secrets.DAPR_BOT_TOKEN }}
         run: |
-          SOURCE_BRANCH=$( git symbolic-ref --short HEAD )
           REMOTE=$( git remote )
           git fetch $REMOTE ${{ matrix.branch }}:${{ matrix.branch }}
           git checkout ${{ matrix.branch }} 
-          git merge $SOURCE_BRANCH
-          git push
+          git merge ${{ env.GITHUB_SHA }}
+          git push $REMOTE ${{ matrix.branch }}
