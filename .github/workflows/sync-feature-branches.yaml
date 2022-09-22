@@ -35,9 +35,7 @@ jobs:
         run: |
           SOURCE_BRANCH=$( git symbolic-ref --short HEAD )
           REMOTE=$( git remote )
-          echo $REMOTE $SOURCE_BRANCH
-          git fetch $REMOTE
-          git branch
-          git checkout --track -b ${{ matrix.branch }} $REMOTE/${{ matrix.branch }}
+          git fetch $REMOTE ${{ matrix.branch }}:${{ matrix.branch }}
+          git checkout ${{ matrix.branch }} 
           git merge $SOURCE_BRANCH
           git push
