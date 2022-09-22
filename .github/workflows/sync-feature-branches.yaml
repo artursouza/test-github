@@ -34,6 +34,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.DAPR_BOT_TOKEN }}
         run: |
           SOURCE_BRANCH=$( git symbolic-ref --short HEAD )
+          REMOTE=$( git remote )
+          echo $REMOTE $SOURCE_BRANCH
           git checkout --track -b ${{ matrix.branch }} origin/${{ matrix.branch }}
           git merge $SOURCE_BRANCH
           git push
