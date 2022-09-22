@@ -20,7 +20,8 @@ on:
       - master
       - main
 jobs:
-  merge: Merge master into feature branches
+  merge:
+    name: Merge master into feature branches
     runs-on: ubuntu-latest
     strategy:
       matrix:
