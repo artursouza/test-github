@@ -36,6 +36,6 @@ jobs:
           SOURCE_BRANCH=$( git symbolic-ref --short HEAD )
           REMOTE=$( git remote )
           echo $REMOTE $SOURCE_BRANCH
-          git checkout --track -b ${{ matrix.branch }} origin/${{ matrix.branch }}
+          git checkout --track -b ${{ matrix.branch }} ${{ matrix.branch }}
           git merge $SOURCE_BRANCH
           git push
