@@ -38,6 +38,6 @@ jobs:
           echo $REMOTE $SOURCE_BRANCH
           git fetch $REMOTE
           git branch
-          git checkout --track -b ${{ matrix.branch }} ${{ matrix.branch }}
+          git checkout --track -b ${{ matrix.branch }} $REMOTE/${{ matrix.branch }}
           git merge $SOURCE_BRANCH
           git push
