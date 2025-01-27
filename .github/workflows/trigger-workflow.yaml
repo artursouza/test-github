@@ -1,0 +1,42 @@
+#
+# Copyright 2021 The Dapr Authors
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Triggers another GitHub Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      gh_owner:
+        description: 'GitHub owner, like: dapr, artursouza, etc'
+        required: true 
+        type: string
+      gh_repo:
+          description: 'GitHub repository, like: dapr, java-sdk, etc'
+          required: true 
+          type: string
+      gh_workflow_id:
+          description: 'GitHub workflow, like: dapr.yml, version-update.yml, etc'
+          required: true 
+          type: string
+      rel_version:
+        description: 'Dapr release version (examples: 1.9.0-rc.1, 1.9.1)'
+        required: true 
+        type: string
+
+jobs:
+  trigger:
+    name: Triggers another GitHub workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger GitHub workflow
+        run: GITHUB_TOKEN="${{ secrets.DAPR_BOT_TOKEN }}" gh api repos/${{ inputs.gh_owner }}/${{ inputs.gh_repo }}/actions/workflows/${{ inputs.gh_workflow_id }}/dispatches -X POST -f ref="master" -f inputs[rel_version]="${{ inputs.rel_version }}"
